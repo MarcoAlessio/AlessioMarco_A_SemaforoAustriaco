@@ -13,8 +13,9 @@ int R2 = 2;
 
 int richiesta = 0;
 int numLampeggiVerde = 0;
-int tempoVR = 0;
+int tempoVerde = 0;
 int tempoGiallo = 0;
+int tempoLampeggi = 0;
 
 void setup() {
   // put your setup code here, to run once:
@@ -27,52 +28,63 @@ void setup() {
 }
 
 void richiediValori() {
-  //Come prima domanda 
+  //Come prima domanda chiedo all'utente quanti lampeggi vuole far fare al verde
   Serial.println("Quanti lampeggi vuoi che faccia il verde?");
   while(Serial.available() ==0);
   numLampeggiVerde = Serial.readString().toInt();
 
-  Serial.println("Quanto vuoi che restino accesi il verde e il rosso?");
+  //Chiedo quanto vuole che duri ogni lampeggio del verde
+  Serial.println("Quanto vuoi che siano lunghi i lampeggi del verde?");
   while(Serial.available() ==0);
-  tempoVR = Serial.readString().toInt();
+  tempoLampeggi = Serial.readString().toInt();
 
+  //Chiedo quando vuole far durare il verde
+  Serial.println("Quanto vuoi che resti acceso il verde?");
+  while(Serial.available() ==0);
+  tempoVerde = Serial.readString().toInt();
+
+  //Chiedo quanto vuole far durare il giallo
   Serial.println("Quanto vuoi che resti acceso il giallo?");
   while(Serial.available() ==0);
   tempoGiallo = Serial.readString().toInt();
+
+  //Non inserisco la stessa domanda per il rosso perché la sua durata dipende dalla durata del verde e del rosso, non può essere differente
 }
 
 void lampeggio1() {
+  //Ciclo for che fa lampeggire il verde del semaforo 1, come tempo del delay inserisco la variabile che aveva dato l'utente in input
   for(int i=0; i<numLampeggiVerde; i++){
   digitalWrite (V1, LOW);
-  delay (500);
+  delay (tempoLampeggi);
   digitalWrite (V1, HIGH);
-  delay (500);
+  delay (tempoLampeggi);
   }
 }
 
 void lampeggio2() {
+  //Ciclo for che fa lampeggire il verde del semaforo 2, come tempo del delay inserisco la stessa variabile utilizzata nel ciclo precedente
   for(int i=0; i<numLampeggiVerde; i++){
   digitalWrite (V2, LOW);
-  delay (500);
+  delay (tempoLampeggi);
   digitalWrite (V2, HIGH);
-  delay (500); 
+  delay (tempoLampeggi); 
   }
 }
 
 void loop() {
   Serial.begin(9600);
-  // put your main code here, to run repeatedly:  
+  // put your main code here, to run repeatedly:
+  //Questo ciclo if mi serve per far comparire le domande solo al primo avvio, ad ogni ciclo questa variabile si incrementa di 1 così il ciclo if restituisce falso  
   if (richiesta ==0)
   {
     richiediValori();
   }
-  
+
+  //Il ciclo generico della sequenza dei colori rimane pressoché invariato
   digitalWrite (R1, HIGH);
   digitalWrite (V2, HIGH);
-  delay (tempoVR);
-  
-  lampeggio2();
-  
+  delay (tempoVerde);  
+  lampeggio2();  
   digitalWrite (V2, LOW);
   digitalWrite (G1, HIGH);
   digitalWrite (G2, HIGH);
@@ -82,10 +94,8 @@ void loop() {
   digitalWrite (R1, LOW);
   digitalWrite (R2, HIGH);
   digitalWrite (V1, HIGH);
-  delay (tempoVR);
-  
-  lampeggio1();
-  
+  delay (tempoVerde);  
+  lampeggio1(); 
   digitalWrite (V1, LOW);
   digitalWrite (G2, HIGH);
   digitalWrite (G1, HIGH);
@@ -93,6 +103,7 @@ void loop() {
   digitalWrite (G2, LOW);
   digitalWrite (G1, LOW);
   digitalWrite (R2, LOW);
-    
+
+  //Come già precisato la variabile richiesta aumenta di una unità ad ogni ciclo
   richiesta++;
 }
