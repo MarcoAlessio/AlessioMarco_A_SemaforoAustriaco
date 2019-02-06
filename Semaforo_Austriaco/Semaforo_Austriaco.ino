@@ -51,23 +51,13 @@ void richiediValori() {
   //Non inserisco la stessa domanda per il rosso perché la sua durata dipende dalla durata del verde e del rosso, non può essere differente
 }
 
-void lampeggio1() {
-  //Ciclo for che fa lampeggire il verde del semaforo 1, come tempo del delay inserisco la variabile che aveva dato l'utente in input
+void lampeggio(int led) {
+  //Ciclo for che fa lampeggire il verde, come tempo del delay inserisco la variabile che aveva dato l'utente in input
   for(int i=0; i<numLampeggiVerde; i++){
-  digitalWrite (V1, LOW);
+  digitalWrite (led, LOW);
   delay (tempoLampeggi);
-  digitalWrite (V1, HIGH);
+  digitalWrite (led, HIGH);
   delay (tempoLampeggi);
-  }
-}
-
-void lampeggio2() {
-  //Ciclo for che fa lampeggire il verde del semaforo 2, come tempo del delay inserisco la stessa variabile utilizzata nel ciclo precedente
-  for(int i=0; i<numLampeggiVerde; i++){
-  digitalWrite (V2, LOW);
-  delay (tempoLampeggi);
-  digitalWrite (V2, HIGH);
-  delay (tempoLampeggi); 
   }
 }
 
@@ -83,8 +73,8 @@ void loop() {
   //Il ciclo generico della sequenza dei colori rimane pressoché invariato
   digitalWrite (R1, HIGH);
   digitalWrite (V2, HIGH);
-  delay (tempoVerde);  
-  lampeggio2();  
+  delay (tempoVerde);
+  lampeggio(V2);  
   digitalWrite (V2, LOW);
   digitalWrite (G1, HIGH);
   digitalWrite (G2, HIGH);
@@ -95,7 +85,7 @@ void loop() {
   digitalWrite (R2, HIGH);
   digitalWrite (V1, HIGH);
   delay (tempoVerde);  
-  lampeggio1(); 
+  lampeggio(V1); 
   digitalWrite (V1, LOW);
   digitalWrite (G2, HIGH);
   digitalWrite (G1, HIGH);
