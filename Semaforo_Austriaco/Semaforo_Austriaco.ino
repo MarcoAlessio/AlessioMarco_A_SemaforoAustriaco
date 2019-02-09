@@ -52,31 +52,29 @@ void lampeggio(int led) {
   }
 }
 
-void semaforo(int v_acc, int v_spnt, int r_acc, int r_spnt){
+void semaforo(int verde, int rosso){
   //Creazione di un unico metodo per entrambi i 2 semafori utilizzando delle cariabili d'appoggio che al primo ciclo assumono il valore V2, V1, R2, R1 e al secondo si "specchiano"
-  digitalWrite (v_spnt, LOW);
+  digitalWrite (rosso, HIGH);
+  digitalWrite (verde, HIGH);
+  delay (tempoVerde);  
+  lampeggio(verde); 
+  digitalWrite (verde, LOW);
   digitalWrite (G1, HIGH);
   digitalWrite (G2, HIGH);
   delay (tempoGiallo);
   digitalWrite (G1, LOW);
   digitalWrite (G2, LOW);
-  digitalWrite (r_spnt, LOW);
-  digitalWrite (r_acc, HIGH);
-  digitalWrite (v_acc, HIGH);
-  delay (tempoVerde);  
-  lampeggio(v_acc); 
+  digitalWrite (rosso, LOW);
 }
 
 void loop() {
   Serial.begin(9600);
   //Questo ciclo if mi serve per far comparire le domande solo al primo avvio, ad ogni ciclo questa variabile si incrementa di 1 così il ciclo if restituisce falso  
   if (richiesta ==0)
-  {
-    richiediValori();
-  }  
+    richiediValori();  
   //Il ciclo generico della sequenza dei colori rimane pressoché invariato
-  semaforo(V2, V1, R2, R1);
-  semaforo(V1, V2, R1, R2);  
+  semaforo(V2, R1);
+  semaforo(V1, R2);  
   //Come già precisato la variabile richiesta aumenta di una unità ad ogni ciclo
   richiesta++;
 }
