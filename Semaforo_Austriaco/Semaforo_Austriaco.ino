@@ -7,11 +7,11 @@ int R1 = 8;
 int V2 = 6;
 int G2 = 4;
 int R2 = 2;
-int richiesta = 0;
+int richiesta        = 0;
 int numLampeggiVerde = 0;
-int tempoVerde = 0;
-int tempoGiallo = 0;
-int tempoLampeggi = 0;
+int tempoVerde       = 0;
+int tempoGiallo      = 0;
+int tempoLampeggi    = 0;
 
 void setup() {
   pinMode(V1, OUTPUT);
